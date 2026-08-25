@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Speed Test</title>
+</head>
+
+<body>
+
+    <h1>Internet Speed Test</h1>
+
+    <p>Click the button to test your internet speed.</p>
+
+    <button onclick="testSpeed()">Start Test</button>
+    <p id="result"></p>
+    <script>
+function testSpeed() {
+    const startTime = Date.now();
+
+    document.getElementById("result").innerText = "Testing...";
+
+    fetch("https://speed.cloudflare.com/__down?bytes=5000000")
+        .then(response => response.blob())
+        .then(data => {
+            const endTime = Date.now();
+
+            const timeInSeconds = (endTime - startTime) / 1000;
+            const bits = data.size * 8;
+            const speedMbps = (bits / timeInSeconds) / 1000000;
+
+            document.getElementById("result").innerText =
+                "Download Speed: " + speedMbps.toFixed(2) + " Mbps";
+        })
+        .catch(error => {
+            document.getElementById("result").innerText =
+                "Test failed";
+        });
+}
+</script>
+
+
+
+</body>
+</html>
